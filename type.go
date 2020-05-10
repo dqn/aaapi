@@ -49,3 +49,12 @@ type GetSubscriptionsCountResponse struct {
 }
 
 type GetSubscriptionsResponse struct{}
+
+type GetSubscriptionsListResponse struct {
+	Environment   string         `json:"environment"`
+	ApplicationID string         `json:"application_id"`
+	Subscriptions []Subscription `json:"subscriptions"`
+}
+type Subscription struct {
+	UserID string `json:"user_id"`
+}

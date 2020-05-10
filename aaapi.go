@@ -202,3 +202,25 @@ func (a *AAAPI) GetSubscriptions() (*GetSubscriptionsResponse, error) {
 
 	return &resp, nil
 }
+
+func (a *AAAPI) GetSubscriptionsList() (*GetSubscriptionsListResponse, error) {
+	u := *a.url
+	u.Path += fmt.Sprintf("/all/%s/subscriptions/list.json", a.envName)
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	b, err := a.prosessRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp GetSubscriptionsListResponse
+	err = json.Unmarshal(b, &resp)
+	if err != nil {
+		return nil, err
+	}
+
+	return &resp, nil
+}

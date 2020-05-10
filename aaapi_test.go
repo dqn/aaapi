@@ -78,3 +78,12 @@ func TestGetSubscriptions(t *testing.T) {
 	}
 	fmt.Printf("%+v\n", r)
 }
+
+func TestGetSubscriptionsList(t *testing.T) {
+	a := newAAAPI()
+	r, err := a.GetSubscriptionsList()
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Printf("%+v\n", r)
+}
