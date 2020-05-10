@@ -32,17 +32,24 @@ func NewPremium(ck, cs, at, as, envName string) *AAAPI {
 }
 
 func (a *AAAPI) prosessRequest(req *http.Request) ([]byte, error) {
-	resp, err := a.client.Do(req)
+	r, err := a.client.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer r.Body.Close()
 
-	b, err := ioutil.ReadAll(resp.Body)
+	b, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		return nil, err
 	}
-	println(string(b))
+	// println(string(b))
+
+	var resp ErrorResponse
+	json.Unmarshal(b, &resp)
+	if errs := resp.Errors; len(errs) != 0 {
+		err = fmt.Errorf("code %d: %s", errs[0].Code, errs[0].Message)
+		return nil, err
+	}
 
 	return b, nil
 }
@@ -65,13 +72,13 @@ func (a *AAAPI) PostWebhooks(rawURL string) (*PostWebhooksResponse, error) {
 		return nil, err
 	}
 
-	var r PostWebhooksResponse
-	err = json.Unmarshal(b, &r)
+	var resp PostWebhooksResponse
+	err = json.Unmarshal(b, &resp)
 	if err != nil {
 		return nil, err
 	}
 
-	return &r, nil
+	return &resp, nil
 }
 
 func (a *AAAPI) GetWebhooks() (*GetWebhooksResponse, error) {
@@ -88,13 +95,13 @@ func (a *AAAPI) GetWebhooks() (*GetWebhooksResponse, error) {
 		return nil, err
 	}
 
-	var r GetWebhooksResponse
-	err = json.Unmarshal(b, &r)
+	var resp GetWebhooksResponse
+	err = json.Unmarshal(b, &resp)
 	if err != nil {
 		return nil, err
 	}
 
-	return &r, nil
+	return &resp, nil
 }
 
 func (a *AAAPI) GetWebhooksWithEnvName(envName string) (*GetWebhooksWithEnvNameResponse, error) {
@@ -111,45 +118,47 @@ func (a *AAAPI) GetWebhooksWithEnvName(envName string) (*GetWebhooksWithEnvNameR
 		return nil, err
 	}
 
-	var r GetWebhooksWithEnvNameResponse
-	err = json.Unmarshal(b, &r)
+	var resp GetWebhooksWithEnvNameResponse
+	err = json.Unmarshal(b, &resp)
 	if err != nil {
 		return nil, err
 	}
 
-	return &r, nil
+	return &resp, nil
 }
 
-func (a *AAAPI) PutWebhooks(webhookID string) error {
+func (a *AAAPI) PutWebhooks(webhookID string) (*PutWebhooksResponse, error) {
 	u := *a.url
 	u.Path += fmt.Sprintf("/all/%s/webhooks/%s.json", a.envName, webhookID)
 	req, err := http.NewRequest("PUT", u.String(), nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	resp, err := a.client.Do(req)
+	_, err = a.prosessRequest(req)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	defer resp.Body.Close()
 
-	return nil
+	var resp PutWebhooksResponse
+
+	return &resp, nil
 }
 
-func (a *AAAPI) PostSubscriptions() error {
+func (a *AAAPI) PostSubscriptions() (*PostSubscriptionsResponse, error) {
 	u := *a.url
 	u.Path += fmt.Sprintf("/all/%s/subscriptions.json", a.envName)
 	req, err := http.NewRequest("POST", u.String(), nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	resp, err := a.client.Do(req)
+	_, err = a.prosessRequest(req)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	defer resp.Body.Close()
 
-	return nil
+	var resp PostSubscriptionsResponse
+
+	return &resp, nil
 }

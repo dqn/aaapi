@@ -1,6 +1,17 @@
 package aaapi
 
-import "time"
+import (
+	"time"
+)
+
+type ErrorResponse struct {
+	Errors []Error `json:"errors"`
+}
+
+type Error struct {
+	Code    uint   `json:"code"`
+	Message string `json:"message"`
+}
 
 type PostWebhooksResponse struct {
 	ID        string    `json:"id"`
@@ -10,19 +21,23 @@ type PostWebhooksResponse struct {
 }
 
 type GetWebhooksResponse struct {
-	Environments []Environments `json:"environments"`
+	Environments []Environment `json:"environments"`
 }
 
-type Webhooks struct {
+type Webhook struct {
 	ID        string    `json:"id"`
 	URL       string    `json:"url"`
 	Valid     bool      `json:"valid"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
-type Environments struct {
-	EnvironmentName string     `json:"environment_name"`
-	Webhooks        []Webhooks `json:"webhooks"`
+type Environment struct {
+	EnvironmentName string    `json:"environment_name"`
+	Webhooks        []Webhook `json:"webhooks"`
 }
 
-type GetWebhooksWithEnvNameResponse []Webhooks
+type GetWebhooksWithEnvNameResponse []Webhook
+
+type PutWebhooksResponse struct{}
+
+type PostSubscriptionsResponse struct{}

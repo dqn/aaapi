@@ -45,16 +45,18 @@ func TestGetWebhooksWithEnvName(t *testing.T) {
 
 func TestPutWebhooks(t *testing.T) {
 	a := newAAAPI()
-	err := a.PutWebhooks(os.Getenv("WEBHOOK_ID"))
+	r, err := a.PutWebhooks(os.Getenv("WEBHOOK_ID"))
 	if err != nil {
 		t.Fatal(err)
 	}
+	fmt.Printf("%+v\n", r)
 }
 
 func TestPostSubscriptions(t *testing.T) {
 	a := newAAAPI()
-	err := a.PostSubscriptions()
+	r, err := a.PostSubscriptions()
 	if err != nil {
 		t.Fatal(err)
 	}
+	fmt.Printf("%+v\n", r)
 }
