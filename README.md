@@ -27,7 +27,7 @@ func main() {
 		"ACCESS_TOKEN_SECRET",
 		"ENV_NAME",
 	)
-	r, err := a.PostWebhooks("https://example.com/crc")
+	r, err := a.PostWebhooks("https://example.com/webhook")
 	if err != nil {
 		// handle error
 	}
@@ -47,10 +47,10 @@ func main() {
 - [x] Get webhooks
 - [x] Get webhooks with env name
 - [x] Put webhooks
-- [ ] Post subscriptions
-- [ ] Get subscriptions count
-- [ ] Get subscriptions
-- [ ] Get subscriptions list
-- [ ] Delete webhooks
-- [ ] Delete webhooks
-- [ ] Delete subscriptions user
+- [x] Post subscriptions
+- [x] Get subscriptions count
+- [x] Get subscriptions
+- [x] Get subscriptions list
+- [x] Delete webhooks
+- [x] Delete webhooks
+- [x] Delete subscriptions user
