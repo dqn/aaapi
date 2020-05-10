@@ -50,3 +50,11 @@ func TestPutWebhooks(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestPostSubscriptions(t *testing.T) {
+	a := newAAAPI()
+	err := a.PostSubscriptions()
+	if err != nil {
+		t.Fatal(err)
+	}
+}

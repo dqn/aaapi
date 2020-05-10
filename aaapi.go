@@ -42,7 +42,7 @@ func (a *AAAPI) prosessRequest(req *http.Request) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	// println(string(b))
+	println(string(b))
 
 	return b, nil
 }
@@ -124,6 +124,23 @@ func (a *AAAPI) PutWebhooks(webhookID string) error {
 	u := *a.url
 	u.Path += fmt.Sprintf("/all/%s/webhooks/%s.json", a.envName, webhookID)
 	req, err := http.NewRequest("PUT", u.String(), nil)
+	if err != nil {
+		return err
+	}
+
+	resp, err := a.client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	return nil
+}
+
+func (a *AAAPI) PostSubscriptions() error {
+	u := *a.url
+	u.Path += fmt.Sprintf("/all/%s/subscriptions.json", a.envName)
+	req, err := http.NewRequest("POST", u.String(), nil)
 	if err != nil {
 		return err
 	}
