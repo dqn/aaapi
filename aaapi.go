@@ -82,3 +82,27 @@ func (a *AAAPI) GetWebhooks() (*GetWebhooksResponse, error) {
 
 	return &r, nil
 }
+
+func (a *AAAPI) GetWebhooksWithEnvName(envName string) (*GetWebhooksWithEnvNameResponse, error) {
+	u := *a.url
+	u.Path += fmt.Sprintf("/all/%s/webhooks.json", envName)
+
+	resp, err := a.client.Get(u.String())
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var r GetWebhooksWithEnvNameResponse
+	err = json.Unmarshal(b, &r)
+	if err != nil {
+		return nil, err
+	}
+
+	return &r, nil
+}

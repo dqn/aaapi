@@ -24,3 +24,5 @@ type Environments struct {
 	EnvironmentName string     `json:"environment_name"`
 	Webhooks        []Webhooks `json:"webhooks"`
 }
+
+type GetWebhooksWithEnvNameResponse []Webhooks
