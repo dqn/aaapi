@@ -42,3 +42,11 @@ func TestGetWebhooksWithEnvName(t *testing.T) {
 	}
 	fmt.Printf("%+v", r)
 }
+
+func TestPutWebhooks(t *testing.T) {
+	a := newAAAPI()
+	err := a.PutWebhooks(os.Getenv("WEBHOOK_ID"))
+	if err != nil {
+		t.Fatal(err)
+	}
+}
