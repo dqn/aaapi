@@ -60,3 +60,5 @@ type Subscription struct {
 }
 
 type DeleteWebhooksResponse struct{}
+
+type DeleteSubscriptionsUserResponse struct{}

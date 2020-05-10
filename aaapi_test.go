@@ -96,3 +96,12 @@ func TestDeleteWebhooks(t *testing.T) {
 	}
 	fmt.Printf("%+v\n", r)
 }
+
+func TestDeleteSubscriptionsUser(t *testing.T) {
+	a := newAAAPI()
+	r, err := a.DeleteSubscriptionsUser(os.Getenv("USER_ID"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Printf("%+v\n", r)
+}
