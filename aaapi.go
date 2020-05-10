@@ -35,7 +35,7 @@ func (a *AAAPI) PostWebhooks(rawURL string) (*PostWebhooksResponse, error) {
 	u := *a.url
 	u.Path += fmt.Sprintf("/all/%s/webhooks.json", a.envName)
 	q := url.Values{
-		"url": {url.QueryEscape(rawURL)},
+		"url": {rawURL},
 	}
 	u.RawQuery = q.Encode()
 
@@ -51,7 +51,32 @@ func (a *AAAPI) PostWebhooks(rawURL string) (*PostWebhooksResponse, error) {
 	}
 
 	var r PostWebhooksResponse
-	if err = json.Unmarshal(b, &r); err != nil {
+	err = json.Unmarshal(b, &r)
+	if err != nil {
+		return nil, err
+	}
+
+	return &r, nil
+}
+
+func (a *AAAPI) GetWebhooks() (*GetWebhooksResponse, error) {
+	u := *a.url
+	u.Path += "/all/webhooks.json"
+
+	resp, err := a.client.Get(u.String())
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var r GetWebhooksResponse
+	err = json.Unmarshal(b, &r)
+	if err != nil {
 		return nil, err
 	}
 
