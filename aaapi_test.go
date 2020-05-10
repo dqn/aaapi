@@ -22,7 +22,7 @@ func TestPostWebhooks(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Printf("%+v", r)
+	fmt.Printf("%+v\n", r)
 }
 
 func TestGetWebhooks(t *testing.T) {
@@ -31,7 +31,7 @@ func TestGetWebhooks(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Printf("%+v", r)
+	fmt.Printf("%+v\n", r)
 }
 
 func TestGetWebhooksWithEnvName(t *testing.T) {
@@ -40,7 +40,7 @@ func TestGetWebhooksWithEnvName(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Printf("%+v", r)
+	fmt.Printf("%+v\n", r)
 }
 
 func TestPutWebhooks(t *testing.T) {

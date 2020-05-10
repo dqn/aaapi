@@ -31,6 +31,22 @@ func NewPremium(ck, cs, at, as, envName string) *AAAPI {
 	}
 }
 
+func (a *AAAPI) prosessRequest(req *http.Request) ([]byte, error) {
+	resp, err := a.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	// println(string(b))
+
+	return b, nil
+}
+
 func (a *AAAPI) PostWebhooks(rawURL string) (*PostWebhooksResponse, error) {
 	u := *a.url
 	u.Path += fmt.Sprintf("/all/%s/webhooks.json", a.envName)
@@ -39,13 +55,12 @@ func (a *AAAPI) PostWebhooks(rawURL string) (*PostWebhooksResponse, error) {
 	}
 	u.RawQuery = q.Encode()
 
-	resp, err := a.client.Post(u.String(), "", nil)
+	req, err := http.NewRequest("POST", u.String(), nil)
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
 
-	b, err := ioutil.ReadAll(resp.Body)
+	b, err := a.prosessRequest(req)
 	if err != nil {
 		return nil, err
 	}
@@ -63,13 +78,12 @@ func (a *AAAPI) GetWebhooks() (*GetWebhooksResponse, error) {
 	u := *a.url
 	u.Path += "/all/webhooks.json"
 
-	resp, err := a.client.Get(u.String())
+	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
 
-	b, err := ioutil.ReadAll(resp.Body)
+	b, err := a.prosessRequest(req)
 	if err != nil {
 		return nil, err
 	}
@@ -87,13 +101,12 @@ func (a *AAAPI) GetWebhooksWithEnvName(envName string) (*GetWebhooksWithEnvNameR
 	u := *a.url
 	u.Path += fmt.Sprintf("/all/%s/webhooks.json", envName)
 
-	resp, err := a.client.Get(u.String())
+	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
 
-	b, err := ioutil.ReadAll(resp.Body)
+	b, err := a.prosessRequest(req)
 	if err != nil {
 		return nil, err
 	}
