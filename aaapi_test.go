@@ -60,3 +60,12 @@ func TestPostSubscriptions(t *testing.T) {
 	}
 	fmt.Printf("%+v\n", r)
 }
+
+func TestGetSubscriptionsCount(t *testing.T) {
+	a := newAAAPI()
+	r, err := a.GetSubscriptionsCount()
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Printf("%+v\n", r)
+}

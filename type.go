@@ -41,3 +41,9 @@ type GetWebhooksWithEnvNameResponse []Webhook
 type PutWebhooksResponse struct{}
 
 type PostSubscriptionsResponse struct{}
+
+type GetSubscriptionsCountResponse struct {
+	AccountName        string `json:"account_name"`
+	SubscriptionsCount string `json:"subscriptions_count"`
+	ProvisionedCount   string `json:"provisioned_count"`
+}

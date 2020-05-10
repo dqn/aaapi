@@ -162,3 +162,21 @@ func (a *AAAPI) PostSubscriptions() (*PostSubscriptionsResponse, error) {
 
 	return &resp, nil
 }
+
+func (a *AAAPI) GetSubscriptionsCount() (*GetSubscriptionsCountResponse, error) {
+	u := *a.url
+	u.Path += fmt.Sprintf("/all/subscriptions/count.json")
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = a.prosessRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp GetSubscriptionsCountResponse
+
+	return &resp, nil
+}
