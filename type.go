@@ -58,3 +58,5 @@ type GetSubscriptionsListResponse struct {
 type Subscription struct {
 	UserID string `json:"user_id"`
 }
+
+type DeleteWebhooksResponse struct{}

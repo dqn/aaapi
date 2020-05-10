@@ -87,3 +87,12 @@ func TestGetSubscriptionsList(t *testing.T) {
 	}
 	fmt.Printf("%+v\n", r)
 }
+
+func TestDeleteWebhooks(t *testing.T) {
+	a := newAAAPI()
+	r, err := a.DeleteWebhooks(os.Getenv("WEBHOOK_ID"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Printf("%+v\n", r)
+}

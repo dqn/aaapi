@@ -224,3 +224,21 @@ func (a *AAAPI) GetSubscriptionsList() (*GetSubscriptionsListResponse, error) {
 
 	return &resp, nil
 }
+
+func (a *AAAPI) DeleteWebhooks(webhookID string) (*DeleteWebhooksResponse, error) {
+	u := *a.url
+	u.Path += fmt.Sprintf("/all/%s/webhooks/%s.json", a.envName, webhookID)
+	req, err := http.NewRequest("DELETE", u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = a.prosessRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp DeleteWebhooksResponse
+
+	return &resp, nil
+}
