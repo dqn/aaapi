@@ -165,7 +165,29 @@ func (a *AAAPI) PostSubscriptions() (*PostSubscriptionsResponse, error) {
 
 func (a *AAAPI) GetSubscriptionsCount() (*GetSubscriptionsCountResponse, error) {
 	u := *a.url
-	u.Path += fmt.Sprintf("/all/subscriptions/count.json")
+	u.Path += "/all/subscriptions/count.json"
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	b, err := a.prosessRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp GetSubscriptionsCountResponse
+	err = json.Unmarshal(b, &resp)
+	if err != nil {
+		return nil, err
+	}
+
+	return &resp, nil
+}
+
+func (a *AAAPI) GetSubscriptions() (*GetSubscriptionsResponse, error) {
+	u := *a.url
+	u.Path += fmt.Sprintf("/all/%s/subscriptions.json", a.envName)
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, err
@@ -176,7 +198,7 @@ func (a *AAAPI) GetSubscriptionsCount() (*GetSubscriptionsCountResponse, error) 
 		return nil, err
 	}
 
-	var resp GetSubscriptionsCountResponse
+	var resp GetSubscriptionsResponse
 
 	return &resp, nil
 }

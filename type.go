@@ -47,3 +47,5 @@ type GetSubscriptionsCountResponse struct {
 	SubscriptionsCount string `json:"subscriptions_count"`
 	ProvisionedCount   string `json:"provisioned_count"`
 }
+
+type GetSubscriptionsResponse struct{}
